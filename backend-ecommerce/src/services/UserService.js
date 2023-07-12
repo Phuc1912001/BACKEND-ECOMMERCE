@@ -37,7 +37,7 @@ const createUser = (newUser) => {
 
 const loginUser = (userLogin) => {
   return new Promise(async (resolve, reject) => {
-    const { name, email, password, confirmPassword, phone } = userLogin;
+    const { email, password } = userLogin;
     try {
       const checkUser = await User.findOne({
         email: email,
@@ -45,7 +45,7 @@ const loginUser = (userLogin) => {
       if (checkUser === null) {
         resolve({
           status: "ERR",
-          message: "The user is not defind",
+          message: "The user is not defined",
         });
       }
       const comparePassword = bcrypt.compareSync(password, checkUser.password);
@@ -56,7 +56,6 @@ const loginUser = (userLogin) => {
           message: "The password or user is incorrect",
         });
       }
-
       const access_token = await genneralAccessToken({
         id: checkUser.id,
         isAdmin: checkUser.isAdmin,
